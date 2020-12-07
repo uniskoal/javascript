@@ -247,8 +247,16 @@ escape : {
  * ? 이 continue 를 사용한다. 사용하게 되면 바로 현재 작동 시점에서 중단하고 증감식으로 이동한다.
 */
 
+var traveler = ["germany","korea","spain","usa"]; // 입국 검사인데 한국인은 건너뛰는 이상한 검사
 
-// 여기다가 기가막힌 continue 작성 12 / 07
+for(var i = 0; i < traveler.length; i++) {
+    
+    if(traveler[i] === "korea") continue;
+
+    console.log(`your country? : ${traveler[i]}`);
+}
+
+// 한국인은 건너뛰는 코드를 작성했다.
 
 
 
