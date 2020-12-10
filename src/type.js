@@ -56,6 +56,7 @@ var age = `your age? : ${23}` // 'your age : 23'
  * ? + 연산자는 더하기 연산자 이기도 하지만, 템플릿 연산자가 없던 ES6 이전 시절, 문자열들을 서로 이어주던, 고마운 문자열 연결 연산자 이기도 하다.
  * ? 자바스크립트 엔진은 이 + 연산자를 문자열 연결 우선자로 보고 피연산자중 하나라도 문자열 타입이 있을 경우,
  * ? 다른 피연산자도 문자열 타입으로 강제변환된다.
+ * TODO 단항 연산자 + 일 경우에는 숫자 타입으로 강제 변환된다. +'1' 일 경우.
 */
 
 /** 
@@ -78,6 +79,7 @@ false + ''          // "false"
 null + ''           // "null"
 // undefined 타입
 undefined + ''      // "undefined"
+
 
 
 /** 
@@ -104,3 +106,139 @@ console.log('str' > 0); // false
  * ? 상대적인 크기를 통해 boolean 값을 정하는 비교연산자 또한 숫자 타입으로 변경된다.
  * ? 숫자 타입으로 변경할 수 없는 경우는 표현식 값 false를 반환한다.
 */
+
+/** 
+ * * 불리언 타입 변환
+ * ? 주로 조건식에서 변환이 이루어진다. 조건식에는 단순히 비교문도 있지만
+ * ? 다른 표현식도 사용할 수 있기 때문에, 이 식을 boolean 값으로 강제 변환 시켜야한다.
+ * ? 이를 위해 자바스크립트 엔진은 Truthy 값(참 같은 값), Falsy 값(거짓 같은 값)
+ * ? 으로 구분지어 변환시킨다.
+*/
+
+/** 
+ * ! Falsy 값 (거짓 같은 값)
+*/
+
+// 이 값을 구별하기 위해 간단한 판단 함수를 만들 수 있다.
+
+function realFalsy(discriminate) {
+    return !discriminate;
+}
+
+console.log(realFalsy(false)); // true값이 나오는 게 정상이다. 매개변수가 false인지를 보는것이기 때문.
+console.log(realFalsy(undefined));
+console.log(realFalsy(""));
+console.log(realFalsy(0));
+console.log(realFalsy(null));
+console.log(realFalsy(NaN));
+
+
+/** 
+ * ! Truthy 값 ( 참 같은 값)
+*/
+
+function realTruthy(discriminate) {
+    return !!discriminate; // !는 부정연산자로써, 매개변수 값을 boolean 값으로 변환시킨다.
+}
+
+console.log(realTruthy(true));
+console.log(realTruthy("ㅇ")); // 빈 문자열이 아닌 경우
+console.log(realTruthy(1)); // 0을 제외한 정수(실수)
+console.log(realTruthy([1,2,3])); // 배열, 객체 전부 참 같은 값
+
+
+
+/** 
+ * * 명시적 타입 변환
+ * * 타입 캐스팅 
+ * 
+ * ? 사용자가 분명한 의지를 가지고 타입을 변환시키는 것을 명시적 타입 변환이라고
+ * ? 합니다. 
+ * 
+ * ? 1. 래퍼 객체를 사용해 원시 타입을 임시 객채로 변환시킬 때
+ * ? 2. 자바스크립트 자체 빌트인 메소드
+*/
+
+
+/** 
+ * * 1. 래퍼 객체를 사용한 타입 변환
+ * ? 래퍼란 일상생활에서 사용하는 비닐랲 처럼 내용물을 감싸는 의미를 지니고 있다.
+ * ? 각 원시 타입에 해당하는 래퍼 객체를 사용해 임시적으로 객체로 변환시킨다.
+ * ? 임시기 때문에 한 번 바뀐다음에는 그 값은 사라진다. 
+*/
+
+/** 
+ * * 문자열 변환
+*/
+
+console.log(String(1)); // 객체 생성자인 new 를 사용하지 않고도 호출가능.
+console.log(String(null));
+console.log(String(undefined));
+console.log(String(true));
+console.log(String(false));
+console.log(String([1,2,3])); 
+
+/** 
+ * * 숫자 변환
+*/
+
+console.log(Number("1"));
+console.log(Number(true));
+console.log(Number(false));
+console.log(Number("sdsds")); // 문자열이 숫자가 아니다? NaN
+
+
+/** 
+ * * 논리 변환
+*/
+
+console.log(Boolean(1)); // true
+console.log(Boolean(0)); // false
+
+/** 
+ * ? 위에 설명된 거짓,참 같은 값 전부 바꿀 수 있다.
+*/
+
+/** 
+ * ! 임시 객체의 생명 주기
+ * ? 임시 객체는 한 번 생성되고 바로 해제되는 특성이 있다.
+ * ? 정확히는 객체의 프로퍼티를 참조하게 되면 값을 사용하고, 바로 삭제된다.
+*/
+
+var str = 'hello'; 
+
+str.lab = 'clean';
+
+console.log(str.lab); // undefined 
+
+
+/** 
+ * * 2. 자바스크립트 빌트인 메서드
+ * ? 자바스크립트가 기본적으로 제공하는 빌트인 메서드등을 통해 타입 변환 
+ * ? 여기서 빌트인이란 언어 설계 과정 (제작 과정) 에서 미리 만들어진 걸 뜻한다.
+*/ 
+
+/** 
+ * * 문자열 변환
+*/
+
+var str = 100;
+console.log(str.toString());
+
+str = true;
+console.log(str.toString());
+
+
+/** 
+ * * 숫자 변환
+*/
+
+console.log(parseInt('20')); // 문자열만 가능 
+
+/** 
+ * * 논리 변환
+ * ? 위에서 설명했던 부정연산자 !를 사용하면 된다.
+*/
+
+
+
