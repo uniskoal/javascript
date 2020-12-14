@@ -118,3 +118,40 @@ deepfreeze(user1);
 user1.equipment.weapon = "Golden Sword"; // 무시됨.
 
 console.log(user1.equipment); // 완벽히 동결.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
