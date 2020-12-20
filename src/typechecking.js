@@ -76,13 +76,61 @@ Object.prototype.toString.call(undefined); // [object undefined]
 Object.prototype.toString.call(Math); // [object Math]
 Object.prototype.toString.call(null); // [object null]
 Object.prototype.toString.call({}); // [object Object]
-Object.prototype.toString.call(document); // [object HTMLDocument] 
+Object.prototype.toString.call(new Date()); // [object Date] 
 
 /** 
  * ? call을 통해 타입의 값을 toString으로 문자열로 반환했다. 이를 통해
  * ? 타입 변환에 대한 대비를 할 수 있다.
 */
 
+function getType(type) {
+    return Object.prototype.toString.call(type).slice(8, -1);
+}
+
+/** 
+ * ? slice 메서드의 경우 반환 문자열을 왼쪽에서 ?번째, 오른쪽 ? 까지 잘라버리는 메서드다. 
+*/
+
+console.log(getType(null));
+
+/**
+ * * 함수 보완
+ * ? 위 sum 함수에 타입 체크 기능을 추가
+ */
+
+sum = (one,two) => {
+    
+    if((getType(one) !== 'Number') || (getType(two) !== 'Number')) {
+        throw new TypeError("매개변수의 숫자가 아닌 값이 있습니다.");
+    }
+
+    return one + two;
+}
+
+/** 
+ * ? 위에서 만든 타입체크 함수를 이용해 타입을 판별하는 is함수 시리즈를 만들 수 있다.
+*/
+
+function isNumber(type) {
+    return getType(type) === 'Number';
+}
+
+console.log(isNumber(2));
+
+// ? 다른 타입 또한 오른쪽 피연산자만 바꿔준다면 쉽게 함수를 변경할 수 있다.
+
+/** 
+ * * instanceof ( 상속 체크 )
+ * ? 객체의 타입이 아닌 이 객체가 상속받은 부모 객체 또한 체크할 수 있다.
+ * ? 그럴 때 instanceof 를 쓴다.
+*/
 
 
+function Person() {}
+const person = new Person();
 
+console.log(person instanceof Person); // true
+console.log(person instanceof Object); // true
+
+//? 좌항의 인스턴스가 우항에 명시한 타입의 인스턴스인지
+//? Person 생성자 함수로 저 객체가 생성됐는지 확인한다.
