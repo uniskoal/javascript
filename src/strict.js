@@ -92,17 +92,3 @@ function func() {
  * ? 일반 함수의 this를 사용할 일은 없기 바란다.
  * ? 사용처는 생성자 함수 객체이다.
 */
-
-(function () {
-  'use strict';
-
-  function foo() {
-    console.log(this); // undefined
-  }
-  foo();
-
-  function Foo() {
-    console.log(this); // Foo
-  }
-  new Foo();
-}());
