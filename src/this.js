@@ -269,3 +269,44 @@ console.log(con);
  */
 
 
+/**
+  * * callback 함수에서의 this 바인딩
+  * 
+  * ? 콜백 함수 내부의 this와 외부 함수 내부의 this가 다르기 때문에 문제가 발생할 수 있다.
+  * ? 이때 this를 callback내부의 this로 연결시켜 해결한다.
+*/
+
+function Insert(content) {
+    this.content = content;
+}
+
+Insert.prototype.welcome = function(callback) {
+
+    if(typeof callback == 'function') {
+        
+        callback.call(this); // ? apply 를 사용해도 똑같다. 
+    }
+}
+
+function hi() {
+    console.log(this.content);
+}
+
+var enter = new Insert("why?");
+
+enter.welcome(hi);
+
+/** 
+ * * Function.prototype.bind 메서드 
+ * 
+ * ? apply,call과 같이 bind는 대놓고 this를 객체에 바인딩 하라는 의미를 갖고 있다.
+ * ? 그러나 분명한 차이점은 apply,call는 함수 호출을 한다는 것이고, bind는 연결만 시키기 때문에
+ * ? 따로 함수를 호출 해줘야 한다. 위의 예제를 바꿔보면 아래와 같다.
+ * 
+ * TODO callback.call(this); 
+ * TODO --------------------- 체인지
+ * TODO callback.bind(this)(); -> () 추가로 명시해줘야 함수가 호출된다. 
+*/
+
+
+
